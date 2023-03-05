@@ -23,15 +23,15 @@
         where username = #{username}
     </select>
 
-    <select id="selectByEmail" resultType="User">
-        select * from user
+    <select id="selectByEmail" resultType="int">
+        select count(*) from user
         where email = #{email}
     </select>
 
     <!--keyProperty：主键自增长，回填id属性-->
     <insert id="insertUser" parameterType="User" keyProperty="id">
         insert into user (<include refid="insertAll"></include>)
-        values(#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode}, #{hearderUrl}, #{createTime})
+        values(#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode}, #{headerUrl}, #{createTime})
     </insert>
     
     <update id="updateStatus">

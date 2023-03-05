@@ -3,24 +3,33 @@ $(function(){
 });
 
 function publish() {
+    /*发贴框*/
     $("#publishModal").modal("hide");
+
+    // 41.4发生AJAX请求之前，将CSRF令牌设置到请求的消息头中
+    // var token = $("meta[name='_csrf']").attr("content");
+    // var header = $("meta[name='_csrf_header']").attr("content");
+    // $(document).ajaxSend(function (e, xhr, options) {
+    //     xhr.setRequestHeader(header, token);
+    // })
 
     // 获取标题和内容
     var title = $("#recipient-name").val();
     var content = $("#message-text").val();
-    // 发送异步请求(POST)
+
+    // 发送异步请求（POST）
     $.post(
         CONTEXT_PATH + "/discuss/add",
-        {"title": title, "content": content},
+        {"title":title, "content":content},
         function (data) {
             data = $.parseJSON(data);
-            // 在提示框中显示返回消息
+            // 在提示框中显示返回的消息
             $("#hintBody").text(data.msg);
-            // 显示提示框
+
+            /*显示提示框，2秒后，自动隐藏*/
             $("#hintModal").modal("show");
-            // 2秒后,自动隐藏提示框
             setTimeout(function () {
-                $("#hintModal").modal("hide");
+                $('#hintModal').modal("hide");
                 // 刷新页面
                 if (data.code == 0) {
                     window.location.reload();
@@ -28,5 +37,4 @@ function publish() {
             }, 2000);
         }
     );
-
 }
